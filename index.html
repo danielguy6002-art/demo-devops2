@@ -32,7 +32,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKER_USERNAME }}/mon-site-html # Nom de votre dépôt Docker Hub
+          images: ${{ secrets.DOCKER_USERNAME }}/demo-devops2 # Nom de votre dépôt Docker Hub
           tags: |
             type=sha,prefix=
             type=raw,value=latest
