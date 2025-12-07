@@ -1,105 +1,58 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pipeline DevOps - Succès  Déploiement 🚀</title>
-    
-    <style>
-        /* Réinitialisation de base */
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #1a1a2e; /* Arrière-plan sombre */
-            color: #e0e0e0; /* Texte clair */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            text-align: center;
-        }
+name: Deploy and Publish Docker Image
 
-        /* Conteneur principal pour la zone de contenu */
-        .container {
-            background-color: #0f0f20; /* Conteneur légèrement plus foncé */
-            padding: 40px 60px;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5); /* Ombre futuriste cyan */
-            max-width: 800px;
-            width: 90%;
-            animation: fadeIn 1s ease-out; /* Animation à l'apparition */
-        }
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
-        /* Titre principal */
-        h1 {
-            color: #00ffff; /* Couleur cyan/turquoise brillante */
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            border-bottom: 2px solid #00ffff;
-            padding-bottom: 10px;
-            animation: pulse 2s infinite; /* Effet de pulsation subtil */
-        }
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-        /* Sous-titre ou message de statut */
-        h2 {
-            color: #ffcc00; /* Jaune/doré pour le statut */
-            font-size: 1.5em;
-            margin-top: 0;
-        }
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-        /* Bouton stylisé */
-        .btn {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 10px 25px;
-            background-color: #ff3366; /* Couleur d'accentuation rose/rouge */
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
+      # --- DOCKER HUB : CONNEXION, BUILD & PUSH ---
 
-        .btn:hover {
-            background-color: #cc0033;
-            transform: scale(1.05); /* Effet au survol */
-        }
+      - name: Set up Docker Buildx
+        # Nécessaire pour les fonctionnalités de construction modernes
+        uses: docker/setup-buildx-action@v3
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+      - name: Log in to Docker Hub
+        # Se connecte à Docker Hub en utilisant les secrets
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.8); }
-            100% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); }
-        }
+      - name: Set tag for image
+        # Définir un tag unique (ex: v1.0.0 ou le sha du commit)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ secrets.DOCKER_USERNAME }}/mon-site-html # Nom de votre dépôt Docker Hub
+          tags: |
+            type=sha,prefix=
+            type=raw,value=latest
 
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <h1>✅ Déploiement Automatisé : Succès ! 🤖</h1>
-        
-        <h2>Bienvenue dans l'ère du **DevOps**</h2>
-        <p>
-            Ce site est la preuve vivante que votre pipeline CI/CD fonctionne **parfaitement**.
-            Le code source a été extrait, testé et déployé sur ce serveur en **quelques secondes**.
-        </p>
-        <p>
-            Célébrez l'automatisation, la rapidité et la fiabilité !
-        </p>
-
-        <a href="https://github.com/votre_repo" class="btn" target="_blank">
-            Voir le Workflow sur GitHub
-        </a>
-    </div>
-
-</body>
-</html>
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          
+      # --- DÉPLOIEMENT FTP EXISTANT ---
+      
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.0.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: ./htdocs/
+          dry-run: false
