@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pipeline DevOps - Succès Déploiement V2.0 🚀</title>
+    <title>Pipeline DevOps - Succès Déploiement V2.1 Cyber-Néon 👾</title>
     
     <style>
         /* ========================================
@@ -11,13 +11,14 @@
         ========================================
         */
         :root {
-            --color-bg-dark: #1a1a2e; /* Arrière-plan sombre */
+            --color-bg-dark: #100a20; /* Arrière-plan violet très sombre */
             --color-container-dark: #0f0f20; /* Conteneur foncé */
             --color-primary-cyan: #00ffff; /* Cyan Néon (Titre, Accents) */
             --color-secondary-yellow: #ffcc00; /* Jaune/Doré (Statut, Important) */
             --color-accent-pink: #ff3366; /* Rose/Magenta (Bouton, Call-to-action) */
             --color-text-light: #e0e0e0; /* Texte clair */
             --color-success-green: #39ff14; /* Vert Néon pour succès */
+            --color-text-neon-dark: #8800ff; /* Violet Néon pour accent */
         }
 
         /* ========================================
@@ -36,43 +37,104 @@
             align-items: center;
             min-height: 100vh;
             text-align: center;
-            /* Ajout d'une grille subtile en fond */
-            background-image: linear-gradient(0deg, transparent 24%, rgba(0, 255, 255, 0.03) 25%, rgba(0, 255, 255, 0.03) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, 0.03) 75%, rgba(0, 255, 255, 0.03) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 255, 255, 0.03) 25%, rgba(0, 255, 255, 0.03) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, 0.03) 75%, rgba(0, 255, 255, 0.03) 76%, transparent 77%, transparent);
-            background-size: 50px 50px;
+            /* Grille subtile en fond */
+            background-image: 
+                radial-gradient(circle, rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(0deg, transparent 24%, rgba(0, 255, 255, 0.02) 25%), 
+                linear-gradient(90deg, transparent 24%, rgba(0, 255, 255, 0.02) 25%);
+            background-size: 40px 40px, 40px 40px, 40px 40px;
         }
 
         /* ========================================
-        3. CONTENEUR PRINCIPAL
+        3. NAVIGATION GRAVITANTE (Nouveau)
+        ========================================
+        */
+        .cyber-nav {
+            position: fixed; /* Rendre la navigation fixe */
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .cyber-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .cyber-nav a {
+            color: var(--color-primary-cyan);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            padding: 8px 15px;
+            border-radius: 50px; /* Puce circulaire */
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 0 5px var(--color-primary-cyan);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+
+        /* Effet de Gravitation et Néon au survol */
+        .cyber-nav a:hover {
+            color: var(--color-bg-dark);
+            transform: translateY(-3px) scale(1.05); /* Gravitation */
+            box-shadow: 0 0 15px var(--color-accent-pink), 0 0 5px var(--color-primary-cyan);
+            text-shadow: none;
+        }
+
+        /* Animation de fond néon des rubriques */
+        .cyber-nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--color-primary-cyan), transparent);
+            opacity: 0.8;
+            transition: left 0.5s ease-out;
+            z-index: -1;
+        }
+
+        .cyber-nav a:hover::before {
+            left: 0;
+        }
+
+        /* ========================================
+        4. CONTENEUR PRINCIPAL (Ajout Glitch)
         ========================================
         */
         .container {
             background-color: var(--color-container-dark);
             padding: 40px 60px;
             border-radius: 15px;
-            /* Ombre futuriste plus prononcée */
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.5), 0 0 50px rgba(255, 51, 102, 0.2); 
             max-width: 900px;
             width: 90%;
-            animation: fadeIn 1s ease-out;
-            border: 1px solid var(--color-primary-cyan); /* Bordure Néon */
+            animation: fadeIn 1s ease-out, glitch-pulse 4s infinite alternate; /* Glitch sur le conteneur */
+            border: 1px solid var(--color-primary-cyan);
             position: relative;
             z-index: 10;
         }
 
         /* ========================================
-        4. TYPOGRAPHIE & TITRES
+        5. TYPOGRAPHIE & TITRES
         ========================================
         */
         h1 {
             color: var(--color-primary-cyan);
-            font-size: 2.8em;
+            font-size: 3em;
             margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 5px;
             border-bottom: 2px solid var(--color-primary-cyan);
             padding-bottom: 15px;
-            animation: pulse 2s infinite alternate; /* Effet de pulsation amélioré */
-            text-shadow: 0 0 5px var(--color-primary-cyan); /* Effet néon */
+            animation: pulse 2s infinite alternate, flicker 5s infinite; /* Effet de pulsation et clignotement */
+            text-shadow: 0 0 10px var(--color-primary-cyan);
         }
 
         h2 {
@@ -85,17 +147,18 @@
 
         .section-title {
             color: var(--color-accent-pink);
-            font-size: 1.2em;
+            font-size: 1.3em;
             margin-top: 30px;
             margin-bottom: 15px;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             border-bottom: 1px dashed var(--color-accent-pink);
             padding-bottom: 5px;
+            text-shadow: 0 0 3px var(--color-accent-pink);
         }
 
         /* ========================================
-        5. GRILLE DE METRIQUES (Nouveau Détail)
+        6. GRILLE DE METRIQUES (Ajout Animation Clic)
         ========================================
         */
         .metrics-grid {
@@ -112,11 +175,19 @@
             border-left: 3px solid var(--color-secondary-yellow);
             text-align: left;
             box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer; /* Indiquer qu'il est cliquable */
         }
 
         .metric-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+        }
+
+        /* Animation de feedback au clic */
+        .metric-card:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 5px var(--color-success-green);
         }
 
         .metric-card span {
@@ -129,13 +200,14 @@
         }
 
         .metric-card strong {
-            font-size: 1.1em;
+            font-size: 1.2em;
             color: var(--color-text-light);
             word-break: break-all;
+            display: block;
         }
 
         /* ========================================
-        6. ÉTAPES DU PIPELINE (Nouveau Détail)
+        7. ÉTAPES DU PIPELINE (Effet de progression)
         ========================================
         */
         .pipeline-steps {
@@ -145,20 +217,22 @@
             text-align: left;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
         .pipeline-steps li {
             display: flex;
             align-items: center;
             background-color: #15152a;
-            padding: 10px 15px;
+            padding: 12px 15px;
             border-radius: 5px;
             border: 1px solid rgba(0, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
+            transition: all 0.3s ease;
         }
 
+        /* Effet de progression visuel */
         .pipeline-steps li::after {
             content: '';
             position: absolute;
@@ -166,22 +240,31 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, var(--color-success-green) 5px, transparent 5px);
+            background: linear-gradient(90deg, var(--color-success-green) 5%, transparent 5px);
             opacity: 0.1;
         }
+        
+        /* Animation au survol des étapes */
+        .pipeline-steps li:hover {
+            background-color: #1e1e35;
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+
 
         .step-status {
-            font-size: 1.2em;
+            font-size: 1.5em;
             margin-right: 15px;
             color: var(--color-success-green);
+            animation: statusGlow 2s infinite alternate; /* Lumière sur le statut */
         }
 
         .step-name {
             font-weight: bold;
+            letter-spacing: 1px;
         }
 
         /* ========================================
-        7. BOUTON (Amélioration)
+        8. BOUTON (Animation Glitch Cliquable)
         ========================================
         */
         .btn {
@@ -195,20 +278,28 @@
             font-weight: bold;
             font-size: 1.1em;
             transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(255, 51, 102, 0.5); /* Ombre rose néon */
+            box-shadow: 0 0 15px rgba(255, 51, 102, 0.5); 
             border: none;
             text-transform: uppercase;
             letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn:hover {
             background-color: #cc0033;
             transform: scale(1.08); 
             box-shadow: 0 0 25px rgba(255, 51, 102, 0.8), 0 0 5px var(--color-primary-cyan);
+            animation: glitch-anim 1s infinite;
+        }
+
+        /* Animation de feedback au clic */
+        .btn:active {
+            transform: scale(0.95);
         }
         
         /* ========================================
-        8. ANIMATIONS CLÉS
+        9. ANIMATIONS CLÉS
         ========================================
         */
         @keyframes fadeIn {
@@ -226,20 +317,43 @@
                 text-shadow: 0 0 4px var(--color-primary-cyan);
             }
             20%, 24%, 55% {        
-                text-shadow: none;
+                text-shadow: 0 0 2px var(--color-primary-cyan), 0 0 1px var(--color-accent-pink);
             }
         }
+        
+        @keyframes statusGlow {
+            0% { text-shadow: 0 0 5px var(--color-success-green); }
+            100% { text-shadow: 0 0 10px var(--color-success-green), 0 0 2px rgba(57, 255, 20, 0.5); }
+        }
+
+        @keyframes glitch-anim {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+        
+        @keyframes glitch-pulse {
+            0% { transform: translate(0, 0); }
+            2% { transform: translate(-1px, 1px); box-shadow: 0 0 30px rgba(0, 255, 255, 0.5), 0 0 50px rgba(255, 51, 102, 0.2); }
+            4% { transform: translate(1px, -1px); box-shadow: 0 0 30px rgba(0, 255, 255, 0.6), 0 0 50px rgba(255, 51, 102, 0.3); }
+            6% { transform: translate(0, 0); }
+        }
+
 
         /* ========================================
-        9. FOOTER (Subtil)
+        10. FOOTER (Subtil et Animé)
         ========================================
         */
         footer {
-            margin-top: 30px;
+            margin-top: 40px;
             padding-top: 20px;
             border-top: 1px dotted rgba(255, 255, 255, 0.1);
-            font-size: 0.8em;
+            font-size: 0.9em;
             color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.5px;
         }
 
         footer strong {
@@ -250,52 +364,60 @@
 </head>
 <body>
 
+    <nav class="cyber-nav">
+        <ul>
+            <li><a href="#dashboard">Dashboard V2.1</a></li>
+            <li><a href="#metrics">Rapports Clés</a></li>
+            <li><a href="#alerts">Système d'Alertes</a></li>
+        </ul>
+    </nav>
+    
     <div class="container">
         <h1>✅ Déploiement CI/CD : Succès Critique ! 🤖</h1>
         
-        <h2>Interface de Téléportation de Code V2.0</h2>
+        <h2>Interface de Téléportation de Code V2.1 : Mode Opérationnel</h2>
 
         <p>
             Félicitations. La **Matrice** confirme que toutes les étapes du pipeline sont passées au vert. 
-            L'artefact final a été **téléchargé et activé** sur ce serveur.
+            L'artefact final a été **téléchargé et activé** sur ce serveur. *Accès au cœur du système débloqué.*
         </p>
 
-        <div class="section-title">Synthèse du Build</div>
+        <div class="section-title" id="metrics">Synthèse du Build (Cliquer pour Interagir)</div>
         <div class="metrics-grid">
-            <div class="metric-card">
+            <div class="metric-card" onclick="console.log('ID Copié')">
                 <span>ID du Build</span>
                 <strong>#42781</strong>
             </div>
-            <div class="metric-card">
+            <div class="metric-card" onclick="console.log('Branche Affichée')">
                 <span>Branche Source</span>
                 <strong>feature/devops-v2</strong>
             </div>
-            <div class="metric-card">
+            <div class="metric-card" onclick="console.log('Commit Dévoilé')">
                 <span>Commit ID</span>
                 <strong>a1b2c3d...f67890</strong>
             </div>
-            <div class="metric-card">
+            <div class="metric-card" onclick="console.log('Durée Analysée')">
                 <span>Durée Totale</span>
                 <strong>01m 23s</strong>
             </div>
-            <div class="metric-card">
+            <div class="metric-card" onclick="console.log('Auteur Authentifié')">
                 <span>Déployé par</span>
                 <strong>[USER_DEV]</strong>
             </div>
-            <div class="metric-card">
+            <div class="metric-card" onclick="console.log('Horodatage Confirmé')">
                 <span>Timestamp</span>
                 <strong>2025-12-08 10:00 UTC</strong>
             </div>
         </div>
 
-        <div class="section-title">Séquence d'Opérations Automatisées</div>
+        <div class="section-title" id="dashboard">Séquence d'Opérations Automatisées</div>
         <ul class="pipeline-steps">
-            <li><span class="step-status">✅</span><span class="step-name">Clonage du Code Source</span></li>
-            <li><span class="step-status">✅</span><span class="step-name">Exécution des Tests Unitaires & Intégration</span></li>
-            <li><span class="step-status">✅</span><span class="step-name">Build de l'Artefact Docker/JAR</span></li>
-            <li><span class="step-status">✅</span><span class="step-name">Scan de Vulnérabilités de l'Image</span></li>
-            <li><span class="step-status">✅</span><span class="step-name">Déploiement sur l'Environnement de Production</span></li>
-            <li><span class="step-status">✅</span><span class="step-name">Vérification de Santé Post-Déploiement (Health Check)</span></li>
+            <li><span class="step-status">✅</span><span class="step-name">Clonage du Code Source (Acquisition de données)</span></li>
+            <li><span class="step-status">✅</span><span class="step-name">Exécution des Tests Unitaires & Intégration (Vérification de l'Intégrité)</span></li>
+            <li><span class="step-status">✅</span><span class="step-name">Build de l'Artefact Docker/JAR (Compilation de l'Objet Final)</span></li>
+            <li><span class="step-status">✅</span><span class="step-name">Scan de Vulnérabilités de l'Image (Protocole de Sécurité S7-R)</span></li>
+            <li><span class="step-status">✅</span><span class="step-name">Déploiement sur l'Environnement de Production (Téléportation Finale)</span></li>
+            <li><span class="step-status">✅</span><span class="step-name">Vérification de Santé Post-Déploiement (Health Check Alpha-7)</span></li>
         </ul>
 
         <a href="https://github.com/votre_repo/actions/42781" class="btn" target="_blank">
@@ -303,9 +425,24 @@
         </a>
 
         <footer>
-            Architecture mise à jour par <strong>Système Auto-Généré v2.0</strong>. La vitesse, c'est l'avenir.
+            Architecture mise à jour par <strong>Système Auto-Généré v2.1</strong>. La vitesse, c'est l'avenir.
         </footer>
     </div>
+    
+    <script>
+        document.querySelectorAll('.metric-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Animation de l'effet de rebond (déjà dans le CSS :active)
+                // On peut ajouter un feedback JS si nécessaire, ex:
+                console.log('Carte cliquée: ', this.querySelector('span').textContent);
+            });
+        });
+
+        document.querySelector('.btn').addEventListener('click', function() {
+            // Animation de l'effet de rebond (déjà dans le CSS :active)
+            console.log("Bouton d'accès au log cliqué.");
+        });
+    </script>
 
 </body>
 </html>

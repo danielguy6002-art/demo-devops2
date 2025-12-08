@@ -18,16 +18,17 @@ provider "docker" {}
 
 # --- 2. Construction de l'Image Docker ---
 resource "docker_image" "web_app_image" {
-  # Remplacez 'votre_utilisateur' par votre nom d'utilisateur Docker Hub ou un nom local.
-  name         = "danielguy/demo-devops2:latest"
+  # 1. Le nom principal et le tag de l'image sont définis ici.
+  name         = "danielguy/demo-devops2:latest" 
   keep_locally = true 
   
-  # Ce bloc déclenche le build à partir de votre Dockerfile.
+  # 2. Le bloc build minimal.
+  #    - context = "." cherche un fichier nommé 'Dockerfile' dans le répertoire courant.
   build {
-    context    = "."
-    dockerfile = "Dockerfile"
-    tag      = ["danielguy/demo-devops2:latest"]
+    context = "."
   }
+  
+  # REMARQUE : Supprimez les arguments 'dockerfile' et 'tag' du bloc build.
 }
 
 
